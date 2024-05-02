@@ -118,7 +118,7 @@
     </select>
     <insert id="paymentInsert" parameterType="payment">
         insert into payment(<include refid="paymentBaseColumns" />)
-        values (#{purchaseNum},#{confirmnumber},#{cardnum},#{tid},#{totalprice},#{resultmessage},#{paymethod},#{appldate},#{appltime},#{purchasename},)
+        values (#{purchaseNum},#{confirmnumber},#{cardnum},#{tid},#{totalprice},#{resultmessage},#{paymethod},#{appldate},#{appltime},#{purchasename})
     </insert>
     <update id="purchaseStatusUpdate" parameterType="purchase">
         update purchase
@@ -146,4 +146,21 @@
         delete from purchase
         where PURCHASE_NUM = #{purchaseNum} and MEMBER_NUM = #{memberNum}
     </delete>
+    <select id="purchaseListSelectOne" parameterType="string" resultMap="purchaseListResultMap">
+        select <include refid="purchaseListBaseColumns" />
+        from PURCHASE_LIST
+        where PURCHASE_NUM = #{purchaseNum}
+    </select>
+    <select id="reservationCheckSelect" parameterType="purchaseList" resultType="integer">
+        <![CDATA[
+            select count(*)
+            from PURCHASE_LIST pl join purchase p
+            on pl.PURCHASE_NUM = p.PURCHASE_NUM
+            where ((RESERVATION_START_DATE BETWEEN #{reservationStartDate} AND #{reservationEndDate})
+               OR (RESERVATION_END_DATE BETWEEN #{reservationStartDate} AND #{reservationEndDate})
+               OR (RESERVATION_START_DATE <= #{reservationStartDate} AND RESERVATION_END_DATE >= #{reservationEndDate}))
+                AND (PURCHASE_STATUS = '결제완료' OR PURCHASE_STATUS = '예약확정')
+                AND ROOMS_NUM = #{roomsNum}
+        ]]>
+    </select>
 </mapper>

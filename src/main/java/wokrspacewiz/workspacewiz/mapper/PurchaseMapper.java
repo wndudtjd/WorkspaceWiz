@@ -24,4 +24,8 @@ public interface PurchaseMapper {
     List<OrderListDTO> orderList(String memberNum);
 
     void purchaseDelete(Map<String, String> map);
+
+    PurchaseListDTO purchaseListSelectOne(String purchaseNum);
+
+    int reservationCheckSelect(PurchaseListDTO dto);
 }

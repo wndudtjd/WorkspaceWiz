@@ -41,6 +41,9 @@
             <th:block th:if="${dto.purchaseDTO.purchaseStatus == '결제완료'}">
                 <a th:href="|paymentDel?purchaseNum=${dto.purchaseDTO.purchaseNum}|">예약취소</a>
             </th:block>
+            <th:block th:if="${dto.purchaseDTO.purchaseStatus == '예약확정'}">
+                <a>후기등록</a>
+            </th:block>
         </td>
     </tr>
 </table>

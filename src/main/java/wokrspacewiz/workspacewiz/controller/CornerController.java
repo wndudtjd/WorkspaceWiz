@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import wokrspacewiz.workspacewiz.command.PurchaseCommand;
@@ -29,6 +30,7 @@ public class CornerController {
     private final PaymentDeleteService paymentDeleteService;
     private final PurchaseListService purchaseListService;
     private final PurchaseStatusUpdateService purchaseStatusUpdateService;
+    private final ReservationCheckService reservationCheckService;
 
     @GetMapping("reservation")
     public String reservation(ScheduleCommand scheduleCommand,String roomsNum, String officeNum, Model model) {
@@ -45,17 +47,23 @@ public class CornerController {
     @PostMapping("roomsOrder")
     public String roomsOrder(PurchaseCommand purchaseCommand, HttpSession session) {
         String purchaseNum = roomsOrderService.execute(purchaseCommand, session);
-        return "redirect:paymentOk?purchaseNum=" + purchaseNum;
+        return "redirect:paymentOk?purchaseNum=" + purchaseNum + "&roomsNum=" + purchaseCommand.getRoomsNum();
     }
     @GetMapping("paymentOk")
     public String paymentOk(String purchaseNum, Model model, HttpSession session) throws Exception {
-        iniPayReqService.execute(purchaseNum, model, session);
-        return "thymeleaf/purchase/payment";
+        int i = reservationCheckService.execute(purchaseNum);
+        if(i > 0) { // 예약 불가 처리
+            paymentDeleteService.execute(purchaseNum, session);
+            return "thymeleaf/purchase/reorder";
+        }else { // 예약 가능 처리
+            iniPayReqService.execute(purchaseNum, model, session);
+            return "thymeleaf/purchase/payment";
+        }
     }
-    @GetMapping("INIstdpay_pc_return")
+    @PostMapping("INIstdpay_pc_return")
     public String INIstdpayPcReturn(HttpServletRequest request) {
         iniPayReturnService.execute(request);
-        return "thyemleaf/purchase/buyfinished";
+        return "thymeleaf/purchase/buyfinished";
     }
     @GetMapping("orderList")
     public String orderList(Model model, HttpSession session) {
