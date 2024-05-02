@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table width="800" align="center">
+    <tr>
+        <td>주문일(결제번호)</td>
+        <td>offic명 / room명 / 주문번호</td>
+        <td>주문상태</td>
+    </tr>
+    <tr th:each="dto,idx : ${list}">
+        <td>
+            [[${dto.purchaseDTO.purchaseDate}]](
+            <th:block th:if="${dto.paymentDTO.appldate == null}">
+                결제대기중
+            </th:block>
+            <th:block th:if="${dto.paymentDTO.appldate != null}">
+                <th:block th:if="${dto.paymentDTO.confirmnumber == null}">
+                    현금결제
+                </th:block>
+                <th:block th:if="${dto.paymentDTO.confirmnumber != null}">
+                    [[${dto.paymentDTO.confirmnumber}]]
+                </th:block>
+            </th:block>
+            )
+        </td>
+        <td>
+            [[${dto.officeDTO.officeName}]] / [[${dto.roomDTO.roomsName}]] / [[${dto.purchaseDTO.purchaseNum}]]
+        </td>
+        <td>
+            <span th:if="${dto.purchaseDTO.purchaseStatus == '입금대기중'}">결제 대기중</span>
+            <span th:if="${dto.purchaseDTO.purchaseStatus != '입금대기중'}">
+                <span th:if="${dto.purchaseDTO.purchaseStatus == '결제완료'}">
+                    <a th:href="|purchaseStatus?purchaseNum=${dto.purchaseDTO.purchaseNum}|">[[${dto.purchaseDTO.purchaseStatus}]]</a>
+                </span>
+                <span th:if="${dto.purchaseDTO.purchaseStatus == '예약확정'}">
+                    [[${dto.purchaseDTO.purchaseStatus}]]
+                </span>
+            </span>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

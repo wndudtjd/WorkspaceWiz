@@ -132,7 +132,7 @@
                MEMBER_NUM, PURCHASE_DATE, PURCHASE_PRICE, RESERVATION_NAME, RESERVATION_PHONE, PURCHASE_STATUS, PURCHASE_NAME,
                CONFIRMNUMBER, CARDNUM, TID, TOTALPRICE, RESULTMESSAGE, PAYMETHOD, APPLDATE, APPLTIME, PUCHASENAME
         from office o join rooms r
-        on o.OFFICE_NUM = r.OFFICE_NUM left outer join purchase_list pl
+        on o.OFFICE_NUM = r.OFFICE_NUM join purchase_list pl
         on r.ROOMS_NUM = pl.ROOMS_NUM and r.OFFICE_NUM = pl.OFFICE_NUM left outer join purchase p
         on pl.PURCHASE_NUM = p.PURCHASE_NUM left outer join payment pm
         on p.PURCHASE_NUM = pm.PURCHASE_NUM

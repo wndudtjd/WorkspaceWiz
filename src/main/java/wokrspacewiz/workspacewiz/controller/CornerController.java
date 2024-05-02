@@ -27,6 +27,8 @@ public class CornerController {
     private final IniPayReturnService iniPayReturnService;
     private final OrderProcessListService orderProcessListService;
     private final PaymentDeleteService paymentDeleteService;
+    private final PurchaseListService purchaseListService;
+    private final PurchaseStatusUpdateService purchaseStatusUpdateService;
 
     @GetMapping("reservation")
     public String reservation(ScheduleCommand scheduleCommand,String roomsNum, String officeNum, Model model) {
@@ -64,5 +66,15 @@ public class CornerController {
     public String paymentDel(String purchaseNum, Model model, HttpSession session) {
         paymentDeleteService.execute(purchaseNum, session);
         return "redirect:orderList";
+    }
+    @GetMapping("purchaseList")
+    public String purchaseList(Model model) {
+        purchaseListService.execute(model);
+        return "thymeleaf/purchase/purchaseList";
+    }
+    @GetMapping("purchaseStatus")
+    public String purchaseStatus(String purchaseNum, Model model) {
+        purchaseStatusUpdateService.execute(purchaseNum);
+        return "redirect:purchaseList";
     }
 }
