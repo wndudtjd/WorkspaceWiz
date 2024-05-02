@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+</head>
+<body>
+WorkspaceWiz 입니다.<br />
+<th:block th:if="${session.auth != null}">
+    <ul>
+        <li><a href="/login/logout">로그아웃</a></li>
+        <th:block th:if="${session.auth.grade == 'emp'}">
+            <li><a href="employee/employeeList">직원 목록</a></li>
+            <li><a href="member/memberList">회원 목록</a></li>
+            <li><a href="office/officeList">office 등록</a></li>
+        </th:block>
+        <th:block th:if="${session.auth.grade == 'mem'}">
+            <li><a href="office/officeList">office 목록</a></li>
+            <li><a href="corner/orderList">예약 목록</a></li>
+        </th:block>
+    </ul>
+</th:block>
+
+<th:block th:if="${session.auth == null}">
+    <form action="/login/login" method="post" th:object="${loginCommand}">
+        <table border="1" align="center">
+            <tr>
+                <td colspan="2">
+                    자동로그인 | 아이디저장
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" name="userId" placeholder="아이디"/><br />
+                </td>
+                <td rowspan="2">
+                    <input type="image" src="/static/img/loginImg.png" width="60"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="password" name="userPw" placeholder="비밀번호" /><br />
+                </td>
+            </tr>
+            <tr>
+                <td  colspan="2">
+                    <a href="/register/signIn">회원가입</a> |
+                    <a href="/">아이디</a> /
+                    <a href="/">비밀번호 찾기</a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li><a href="/">홈</a></li>
+</ul>
+직원 상세 정보 <br />
+직원번호 : [[${employeeCommand.empNum}]]<br />
+직원아이디 : [[${employeeCommand.empId}]]<br />
+직원이름 : [[${employeeCommand.empName}]]<br />
+직원주소 : [[${employeeCommand.empAddr}]]<br />
+직원상세주소 : [[${employeeCommand.empAddrDetail}]]<br />
+우편번호 : [[${employeeCommand.empPost}]]<br />
+연락처 : [[${employeeCommand.empPhone}]]<br />
+이메일 : [[${employeeCommand.empEmail}]]<br />
+주민번호 : [[${employeeCommand.empJumin}]]<br />
+등록일 : [[${#dates.format(employeeCommand.empRegiDate, 'yyyy-MM-dd')}]]<br />
+<a th:href="|employeeUpdate?empNum=${employeeCommand.empNum}|">직원수정</a> |
+<a th:href="|employeeDelete?empNum=${employeeCommand.empNum}|">직원삭제</a>
+</body>
+</html>

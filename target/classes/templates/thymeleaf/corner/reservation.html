@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+    <style>
+        .selected { background-color: gray; } /* 선택된 날짜의 배경색 설정 */
+    </style>
+    <script>
+        $(function() {
+            var clickCount = 0; // 클릭 횟수 카운트
+            var startDate, endDate;
+            var startDateIndex, endDateIndex;
+            var currentYear = parseInt($('#currentYear').text());
+            var currentMonth = parseInt($('#currentMonth').text());
+
+            $('.nDayClick').click(function() {
+                var day = $(this).text();
+                var formattedDate = currentYear + '-' +
+                    (currentMonth < 10 ? '0' : '') + currentMonth + '-' +
+                    (day < 10 ? '0' + day : day);
+                console.log("formattedDate : " + formattedDate)
+
+                if (clickCount == 0) {
+                    $('#startDate').val(formattedDate);
+                    startDateIndex = $(this).parent().index();
+                    startDate = $('#startDate').val();
+                    clickCount = 1;
+                } else if (clickCount == 1) {
+                    $('#endDate').val(formattedDate);
+                    endDateIndex = $(this).parent().index();
+                    endDate = $('#endDate').val();
+
+                    console.log("startDate : " + startDate);
+                    console.log("endDate : " + endDate);
+
+                    if (startDate > endDate) {
+                        var temp = startDate;
+                        startDate = endDate;
+                        endDate = temp;
+
+                        var tempIndex = startDateIndex;
+                        startDateIndex = endDateIndex;
+                        endDateIndex = tempIndex;
+                        $('#startDate').val(startDate);
+                        $('#endDate').val(endDate);
+                    }
+                    clickCount = 0;
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<table id="calendar"  border=1 align="center" width="600" height="400">
+    <caption>예약하기</caption>
+    <tr>
+        <td align="center" colspan = "7">
+            <a th:href="@{/corner/reservation(nYear=${nYear},nMonth=${nMonth},action=previous,roomsNum=${roomsNum},officeNum=${officeNum})}">이전</a>
+            <span id="currentYear" th:text="${nYear}">2023</span>년
+            <span id="currentMonth" th:text="${nMonth}">4</span>월
+            <a th:href="@{/corner/reservation(nYear=${nYear},nMonth=${nMonth},action=next,roomsNum=${roomsNum},officeNum=${officeNum})}">이후</a>
+        </td>
+    </tr>
+    <tr>
+        <th>일</th><th> 월 </th> <th> 화 </th><th> 수 </th><th> 목 </th><th> 금 </th><th> 토 </th>
+    </tr >
+    <tr >
+        <th:block th:each = "num : ${#numbers.sequence(1,35)}" >
+            <td>
+                <div th:with="value1=${num - dayNum + 1}">
+                    <div th:if="${num lt dayNum}" ></div>
+                    <div class="nDayClick" th:if="${num ge dayNum && num lt dayNum + maxDay}" th:text="${value1}"></div>
+                    <div th:if="${num gt dayNum + maxDay}" ></div>
+                </div>
+            </td>
+            <th:block th:if="${num % 7 == 0 && num != 35}" th:utext="'</tr><tr>'" />
+        </th:block>
+    </tr>
+</table>
+<br/>
+<form action="reservation" method="post" align="center">
+    <input type="hidden" name="roomsNum" th:value="${roomsNum}">
+    <input type="hidden" name="officeNum" th:value="${officeNum}">
+    입실일 : <input type="date" id="startDate" name="reservationStartDate" readonly="readonly"><br />
+    퇴실일 : <input type="date" id="endDate" name="reservationEndDate" readonly="readonly"><br />
+    <input type="submit" value="예약하기">
+</form>
+</body>
+</html>

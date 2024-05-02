@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wokrspacewiz.workspacewiz.mapper.PurchaseMapper">
+    <sql id="purchaseBaseColumns">
+        PURCHASE_NUM,
+        MEMBER_NUM,
+		PURCHASE_DATE,
+		PURCHASE_PRICE,
+		RESERVATION_NAME,
+		RESERVATION_PHONE,
+		PURCHASE_STATUS,
+		PURCHASE_NAME
+    </sql>
+    <sql id="purchaseListBaseColumns">
+        ROOMS_NUM,
+        PURCHASE_NUM,
+        OFFICE_NUM,
+        PURCHASE_QTY,
+        TOTAL_PRICE,
+        RESERVATION_START_DATE,
+        RESERVATION_END_DATE
+    </sql>
+    <sql id="paymentBaseColumns">
+        PURCHASE_NUM,
+        CONFIRMNUMBER,
+        CARDNUM,
+        TID,
+        TOTALPRICE,
+        RESULTMESSAGE,
+        PAYMETHOD,
+        APPLDATE,
+        APPLTIME,
+        PUCHASENAME
+    </sql>
+    <resultMap id="purchaseResultMap" type="purchase">
+        <constructor>
+            <idArg column="PURCHASE_NUM" javaType="string" />
+            <idArg column="MEMBER_NUM" javaType="string" />
+            <arg column="PURCHASE_DATE" javaType="java.util.Date" />
+            <arg column="PURCHASE_PRICE" javaType="integer" />
+            <arg column="RESERVATION_NAME" javaType="string" />
+            <arg column="RESERVATION_PHONE" javaType="string" />
+            <arg column="PURCHASE_STATUS" javaType="string" />
+            <arg column="PURCHASE_NAME" javaType="string" />
+        </constructor>
+    </resultMap>
+    <resultMap id="paymentResultMap" type="payment">
+        <constructor>
+            <idArg column="PURCHASE_NUM" javaType="string" />
+            <arg column="CONFIRMNUMBER" javaType="string" />
+            <arg column="CARDNUM" javaType="string" />
+            <arg column="TID" javaType="string" />
+            <arg column="TOTALPRICE" javaType="string" />
+            <arg column="RESULTMESSAGE" javaType="string" />
+            <arg column="PAYMETHOD" javaType="string" />
+            <arg column="APPLDATE" javaType="string" />
+            <arg column="APPLTIME" javaType="string" />
+            <arg column="PUCHASENAME" javaType="string" />
+        </constructor>
+    </resultMap>
+    <resultMap id="purchaseListResultMap" type="purchaseList">
+        <constructor>
+            <idArg column="ROOMS_NUM" javaType="string" />
+            <idArg column="PURCHASE_NUM" javaType="string" />
+            <idArg column="OFFICE_NUM" javaType="string" />
+            <arg column="PURCHASE_QTY" javaType="integer" />
+            <arg column="TOTAL_PRICE" javaType="integer" />
+            <arg column="RESERVATION_START_DATE" javaType="java.util.Date" />
+            <arg column="RESERVATION_END_DATE" javaType="java.util.Date" />
+        </constructor>
+    </resultMap>
+    <resultMap id="officeResultMap" type="office">
+        <constructor>
+            <idArg column="OFFICE_NUM" javaType="string" />
+            <arg column="OFFICE_ADDR" javaType="string" />
+            <arg column="OFFICE_ADDR_DETAIL" javaType="string" />
+            <arg column="OFFICE_POST" javaType="integer" />
+            <arg column="OFFICE_NAME" javaType="string" />
+            <arg column="OFFICE_PHONE" javaType="string" />
+            <arg column="EMP_NUM" javaType="string" />
+        </constructor>
+    </resultMap>
+    <resultMap id="roomResultMap" type="room">
+        <constructor>
+            <idArg column="ROOMS_NUM" javaType="string" />
+            <idArg column="OFFICE_NUM" javaType="string" />
+            <arg column="ROOMS_NAME" javaType="string" />
+            <arg column="ROOMS_PRICE" javaType="integer" />
+            <arg column="ROOMS_CONTENT" javaType="string" />
+            <arg column="ROOMS_MAIN_STORE" javaType="string" />
+            <arg column="ROOMS_MAIN_STORE_IMG" javaType="string" />
+            <arg column="ROOMS_IMAGES" javaType="string" />
+            <arg column="ROOMS_IMAGES_IMG" javaType="string" />
+            <arg column="VISIT_COUNT" javaType="integer" />
+        </constructor>
+    </resultMap>
+    <resultMap id="orderListResultMap" type="orderList">
+        <association property="purchaseDTO" javaType="purchase" resultMap="purchaseResultMap" />
+        <association property="paymentDTO" javaType="payment" resultMap="paymentResultMap" />
+        <association property="purchaseListDTO" javaType="purchaseList" resultMap="purchaseListResultMap" />
+        <association property="officeDTO" javaType="office" resultMap="officeResultMap" />
+        <association property="roomDTO" javaType="room" resultMap="roomResultMap" />
+    </resultMap>
+	<insert id="purchaseInsert" parameterType="purchase">
+        insert into purchase(<include refid="purchaseBaseColumns" />)
+        values (#{purchaseNum},#{memberNum},sysdate,#{purchasePrice},#{reservationName},#{reservationPhone},#{purchaseStatus},#{purchaseName})
+    </insert>
+    <insert id="purchaseListInsert" parameterType="purchaseList">
+        insert into purchase_list(<include refid="purchaseListBaseColumns" />)
+        values(#{roomsNum},#{purchaseNum},#{officeNum},#{purchaseQty},#{totalPrice},#{reservationStartDate},#{reservationEndDate})
+    </insert>
+    <select id="purchaseSelect" parameterType="string" resultMap="purchaseResultMap">
+        select <include refid="purchaseBaseColumns" />
+        from purchase
+        where purchase_num = #{purchaseNum}
+    </select>
+    <insert id="paymentInsert" parameterType="payment">
+        insert into payment(<include refid="paymentBaseColumns" />)
+        values (#{purchaseNum},#{confirmnumber},#{cardnum},#{tid},#{totalprice},#{resultmessage},#{paymethod},#{appldate},#{appltime},#{purchasename},)
+    </insert>
+    <update id="purchaseStatusUpdate" parameterType="purchase">
+        update purchase
+        set purchase_status = #{purchaseStatus}
+        where purchase_num = #{purchaseNum}
+    </update>
+    <select id="orderList" parameterType="string" resultMap="orderListResultMap">
+        select o.OFFICE_NUM, OFFICE_ADDR, OFFICE_ADDR_DETAIL, OFFICE_POST, OFFICE_NAME, OFFICE_PHONE, EMP_NUM,
+               r.ROOMS_NUM, ROOMS_NAME, ROOMS_PRICE, ROOMS_CONTENT, ROOMS_MAIN_STORE, ROOMS_MAIN_STORE_IMG, ROOMS_IMAGES, ROOMS_IMAGES_IMG, VISIT_COUNT,
+               pl.PURCHASE_NUM, PURCHASE_QTY, TOTAL_PRICE, RESERVATION_START_DATE, RESERVATION_END_DATE,
+               MEMBER_NUM, PURCHASE_DATE, PURCHASE_PRICE, RESERVATION_NAME, RESERVATION_PHONE, PURCHASE_STATUS, PURCHASE_NAME,
+               CONFIRMNUMBER, CARDNUM, TID, TOTALPRICE, RESULTMESSAGE, PAYMETHOD, APPLDATE, APPLTIME, PUCHASENAME
+        from office o join rooms r
+        on o.OFFICE_NUM = r.OFFICE_NUM left outer join purchase_list pl
+        on r.ROOMS_NUM = pl.ROOMS_NUM and r.OFFICE_NUM = pl.OFFICE_NUM left outer join purchase p
+        on pl.PURCHASE_NUM = p.PURCHASE_NUM left outer join payment pm
+        on p.PURCHASE_NUM = pm.PURCHASE_NUM
+        <where>
+            <if test="memberNum != null">
+                MEMBER_NUM = #{memberNum}
+            </if>
+        </where>
+    </select>
+</mapper>

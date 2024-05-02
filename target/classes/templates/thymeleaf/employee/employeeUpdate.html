@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/daumAddressScript.js"></script>
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+<ul>
+    <li><a href="/">홈</a></li>
+</ul>
+직원수정페이지<br />
+<form action="employeeUpdate" method="post">
+    <input type="hidden" name="empNum" th:value="${employeeCommand.empNum}">
+    직원아이디 : <input type="text" name="empId" th:value="${employeeCommand.empId}"><br />
+    직원이름 : <input type="text" name="empName" th:value="${employeeCommand.empName}"><br />
+    직원주소 : <input type="text" name="empAddr" id="sample4_roadAddress" onclick="execDaumPostcode()" readonly="readonly" th:value="${employeeCommand.empAddr}"><br />
+    직원상세주소 : <input type="text" name="empAddrDetail" th:value="${employeeCommand.empAddrDetail}"><br />
+    우편번호 : <input type="text" name="empPost" id="sample4_postcode" readonly="readonly" th:value="${employeeCommand.empPost}"><br />
+    연락처 : <input type="tel" name="empPhone" th:value="${employeeCommand.empPhone}"><br />
+    이메일 : <input type="email" name="empEmail" th:value="${employeeCommand.empEmail}"><br />
+    주민번호 : <input type="text" name="empJumin" th:value="${employeeCommand.empJumin}"><br />
+    등록일 : <input type="date" name="empRegiDate" th:value="${#dates.format(employeeCommand.empRegiDate, 'yyyy-MM-dd')}"><br />
+    <input type="submit" value="직원수정">
+</form>
+</body>
+</html>

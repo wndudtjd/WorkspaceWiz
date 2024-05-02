@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wokrspacewiz.workspacewiz.mapper.OfficeMapper">
+	<sql id="officeBaseColumns">
+		OFFICE_NUM,
+		OFFICE_ADDR,
+		OFFICE_ADDR_DETAIL,
+		OFFICE_POST,
+		OFFICE_NAME,
+		OFFICE_PHONE,
+		EMP_NUM
+	</sql>
+	<resultMap id="officeResultMap" type="office">
+		<constructor>
+			<idArg column="OFFICE_NUM" javaType="string" />
+			<arg column="OFFICE_ADDR" javaType="string" />
+			<arg column="OFFICE_ADDR_DETAIL" javaType="string" />
+			<arg column="OFFICE_POST" javaType="integer" />
+			<arg column="OFFICE_NAME" javaType="string" />
+			<arg column="OFFICE_PHONE" javaType="string" />
+			<arg column="EMP_NUM" javaType="string" />
+		</constructor>
+	</resultMap>
+
+	<insert id="officeInsert" parameterType="office">
+		insert into office(<include refid="officeBaseColumns" />)
+		values (#{officeNum},#{officeAddr},#{officeAddrDetail},#{officePost},#{officeName},#{officePhone},#{empNum})
+	</insert>
+	<select id="officeSelectList" resultMap="officeResultMap">
+		select <include refid="officeBaseColumns" />
+		from office
+	</select>
+	<select id="officeSelectOne" parameterType="string" resultMap="officeResultMap">
+		select <include refid="officeBaseColumns" />
+		from office
+		where OFFICE_NUM = #{officeNum}
+	</select>
+</mapper>

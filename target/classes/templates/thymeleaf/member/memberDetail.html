@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li><a href="/">홈</a></li>
+</ul>
+회원 상세페이지<br />
+회원아이디 : [[${memberCommand.memberId}]]<br />
+회원명 : [[${memberCommand.memberName}]]<br />
+회원주소 : [[${memberCommand.memberAddr}]]<br />
+상세주소 : [[${memberCommand.memberAddrDetail}]]<br />
+우편번호 : [[${memberCommand.memberPost}]]<br />
+회원연락처1 : [[${memberCommand.memberPhone1}]]<br />
+회원연락처2 : [[${memberCommand.memberPhone2}]]<br />
+성별 : <span th:if="${memberCommand.memberGender == 'M'}">남자</span>
+<span th:if="${memberCommand.memberGender == 'F'}">여자</span><br />
+회원생년월일 : [[${#dates.format(memberCommand.memberBirth, 'yyyy-MM-dd')}]]<br />
+회원이메일 : [[${memberCommand.memberEmail}]]<br />
+회원등록일 : [[${#dates.format(memberCommand.memberRegist, 'yyyy-MM-dd')}]]<br />
+<a th:href="|../memberUpdate/${memberCommand.memberNum}|">회원 수정</a>
+<a th:href="|../memberDelete/${memberCommand.memberNum}|">회원 삭제</a>
+</body>
+</html>

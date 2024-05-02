@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li><a href="/">홈</a></li>
+    <th:block th:if="${session.auth.grade == 'emp'}">
+        <li><a href="officeRegist">office 등록</a></li>
+    </th:block>
+</ul>
+<table border="1" width="600" align="center">
+    <caption>office 목록</caption>
+    <tr>
+        <th>번호</th>
+        <th>이름</th>
+        <th>장소</th>
+        <th>연락처</th>
+    </tr>
+    <tr th:each="dto,idx : ${list}">
+        <td><a th:href="|officeDetail/${dto.officeNum}|">[[${idx.count}]]</a></td>
+        <td><a th:href="|officeDetail/${dto.officeNum}|">[[${dto.officeName}]]</a></td>
+        <td>[[${dto.officeAddr}]]</td>
+        <td>[[${dto.officePhone}]]</td>
+    </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li><a href="/">홈</a></li>
+    <li><a href="memberRegist">회원 등록</a></li>
+</ul>
+<table border="1" align="center" width="600">
+    <caption>회원 리스트</caption>
+    <tr>
+        <th>번호</th>
+        <th>이름</th>
+        <th>아이디</th>
+        <th>등록일</th>
+    </tr>
+    <tr th:each="dto,idx : ${list}">
+        <td><a th:href="|memberDetail/${dto.memberNum}|">[[${idx.count}]]</a></td>
+        <td><a th:href="|memberDetail/${dto.memberNum}|">[[${dto.memberName}]]</a></td>
+        <td>[[${dto.memberId}]]</td>
+        <td>[[${#dates.format(dto.memberRegist, 'yyyy-MM-dd')}]]</td>
+    </tr>
+</table>
+</body>
+</html>

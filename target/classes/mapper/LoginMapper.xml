@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wokrspacewiz.workspacewiz.mapper.LoginMapper">
+	<select id="loginSelect" parameterType="string" resultType="authInfo">
+        select member_num userNum, member_id userId, member_pw userPw, member_name userName, 'mem' grade, member_email userEmail, MEMBER_EMAIL_CONF userEmailCheck
+        from members
+        where member_id = #{userId}
+        union
+        select emp_num userNum, emp_id userId, emp_pw userPw, emp_name userName, 'emp' grade, emp_email userEmail, 'Y'
+        from employees
+        where emp_id = #{userId}
+    </select>
+</mapper>

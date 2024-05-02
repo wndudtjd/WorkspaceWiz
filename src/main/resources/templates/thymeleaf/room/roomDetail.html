@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li><a href="/">홈</a></li>
+    <th:block th:if="${session.auth.grade == 'emp'}">
+        <li><a th:href="|roomUpdate?roomsNum=${roomCommand.roomsNum}&officeNum=${roomCommand.officeNum}|">room 수정</a></li>
+        <li><a th:href="|roomDelete?roomsNum=${roomCommand.roomsNum}&officeNum=${roomCommand.officeNum}|">room 삭제</a></li>
+    </th:block>
+    <th:block th:if="${session.auth.grade == 'mem'}">
+        <li><a th:href="|/corner/reservation?roomsNum=${roomCommand.roomsNum}&officeNum=${roomCommand.officeNum}|">예약하러 가기</a></li>
+    </th:block>
+</ul>
+<table border="1" align="center" width="600">
+    <caption>room 상세 보기</caption>
+    <tr>
+        <th>방이름</th><td>[[${roomCommand.roomsName}]]</td>
+    </tr>
+    <tr>
+        <th>방가격</th><td>[[${roomCommand.roomsPrice}]]</td>
+    </tr>
+    <tr>
+        <th>방설명</th><td>[[${roomCommand.roomsContent}]]</td>
+    </tr>
+    <tr>
+        <th>대문이미지</th><td><img th:src="|/static/upload/${roomCommand.roomsMainStore}|" width="100"></td>
+    </tr>
+    <tr>
+        <th>상세이미지</th>
+        <td>
+            <th:block th:each="img,idx : ${#strings.arraySplit(roomCommand.roomsImages, '/')}" width="100">
+                <img th:src="|/static/upload/${img}|" width="100">
+            </th:block>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

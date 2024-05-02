@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<ul>
+    <li><a href="/">홈</a></li>
+    <li><a href="employeeRegist">직원 등록</a></li>
+</ul>
+<table border="1" width="600" align="center">
+    <caption>직원 목록</caption>
+    <tr>
+        <th>번호</th>
+        <th>이름</th>
+        <th>아이디</th>
+        <th>등록일</th>
+    </tr>
+    <tr th:each="dto,idx : ${list}">
+        <td><a th:href="|employeeDetail/${dto.empNum}|">[[${idx.count}]]</a></td>
+        <td><a th:href="|employeeDetail/${dto.empNum}|">[[${dto.empName}]]</a></td>
+        <td>[[${dto.empId}]]</td>
+        <td>[[${#dates.format(dto.empRegiDate, 'yyyy-MM-dd')}]]</td>
+    </tr>
+</table>
+</body>
+</html>

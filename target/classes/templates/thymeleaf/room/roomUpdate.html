@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+room 수정 페이지<br/>
+<form action="roomUpdate" method="post">
+    <input type="hidden" name="roomsNum" th:value="${roomCommand.roomsNum}">
+    <input type="hidden" name="officeNum" th:value="${roomCommand.officeNum}">
+    <table border="1" align="center" width="600">
+        <caption>room 상세 보기</caption>
+        <tr>
+            <th>방이름</th><td><input type="text" name="roomsName" th:value="${roomCommand.roomsName}"></td>
+        </tr>
+        <tr>
+            <th>방가격</th><td><input type="number" name="roomsPrice" th:value="${roomCommand.roomsPrice}"></td>
+        </tr>
+        <tr>
+            <th>방설명</th><td><input type="text" name="roomsContent" th:value="${roomCommand.roomsContent}"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><input type="submit" value="수정하기"></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

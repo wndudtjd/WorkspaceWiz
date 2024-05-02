@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wokrspacewiz.workspacewiz.mapper.EmployeeMapper">
+    <sql id="employeeBaseColumns">
+        EMP_NUM,
+        EMP_ID,
+        EMP_PW,
+        EMP_NAME,
+        EMP_ADDR,
+        EMP_ADDR_DETAIL,
+        EMP_POST,
+        EMP_PHONE,
+        EMP_EMAIL,
+        EMP_ENTER_DATE,
+        EMP_JUMIN
+    </sql>
+    <resultMap id="employeeResultMap" type="employee">
+        <constructor>
+            <idArg column="EMP_NUM" javaType="string" />
+            <arg column="EMP_ID" javaType="string" />
+            <arg column="EMP_PW" javaType="string" />
+            <arg column="EMP_NAME" javaType="string" />
+            <arg column="EMP_ADDR" javaType="string" />
+            <arg column="EMP_ADDR_DETAIL" javaType="string" />
+            <arg column="EMP_POST" javaType="integer" />
+            <arg column="EMP_PHONE" javaType="string" />
+            <arg column="EMP_EMAIL" javaType="string" />
+            <arg column="EMP_ENTER_DATE" javaType="java.util.Date" />
+            <arg column="EMP_JUMIN" javaType="string" />
+        </constructor>
+    </resultMap>
+
+    <insert id="employeeInsert" parameterType="employee">
+        insert into employees(<include refid="employeeBaseColumns" />)
+        values(#{empNum},#{empId},#{empPw},#{empName},#{empAddr},#{empAddrDetail},#{empPost},#{empPhone},#{empEmail},sysdate,#{empJumin})
+    </insert>
+    <select id="employeeSelectList" resultMap="employeeResultMap">
+        select <include refid="employeeBaseColumns" />
+        from employees
+    </select>
+    <select id="employeeSelectOne" parameterType="string" resultMap="employeeResultMap">
+        select <include refid="employeeBaseColumns" />
+        from employees
+        where emp_num = #{empNum}
+    </select>
+    <update id="employeeUpdate" parameterType="employee">
+        update employees
+        set EMP_ID = #{empId},
+            EMP_NAME = #{empName},
+            EMP_ADDR = #{empAddr},
+            EMP_ADDR_DETAIL = #{empAddrDetail},
+            EMP_POST = #{empPost},
+            EMP_PHONE = #{empPhone},
+            EMP_JUMIN = #{empJumin},
+            EMP_EMAIL = #{empEmail},
+            EMP_ENTER_DATE = #{empRegiDate}
+        where EMP_NUM = #{empNum}
+    </update>
+    <delete id="employeeDelete">
+        delete from employees where emp_num = #{empNum}
+    </delete>
+</mapper>

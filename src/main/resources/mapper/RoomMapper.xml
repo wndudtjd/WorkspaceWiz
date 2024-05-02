@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wokrspacewiz.workspacewiz.mapper.RoomMapper">
+	<sql id="roomBaseColumns">
+		ROOMS_NUM,
+		OFFICE_NUM,
+		ROOMS_NAME,
+		ROOMS_PRICE,
+		ROOMS_CONTENT,
+		ROOMS_MAIN_STORE,
+		ROOMS_MAIN_STORE_IMG,
+		ROOMS_IMAGES,
+		ROOMS_IMAGES_IMG,
+		VISIT_COUNT
+	</sql>
+	<resultMap id="roomResultMap" type="room">
+		<constructor>
+			<idArg column="ROOMS_NUM" javaType="string" />
+			<idArg column="OFFICE_NUM" javaType="string" />
+			<arg column="ROOMS_NAME" javaType="string" />
+			<arg column="ROOMS_PRICE" javaType="integer" />
+			<arg column="ROOMS_CONTENT" javaType="string" />
+			<arg column="ROOMS_MAIN_STORE" javaType="string" />
+			<arg column="ROOMS_MAIN_STORE_IMG" javaType="string" />
+			<arg column="ROOMS_IMAGES" javaType="string" />
+			<arg column="ROOMS_IMAGES_IMG" javaType="string" />
+			<arg column="VISIT_COUNT" javaType="integer" />
+		</constructor>
+	</resultMap>
+	<insert id="roomInsert" parameterType="room">
+		insert into rooms(<include refid="roomBaseColumns" />)
+		values (#{roomsNum},#{officeNum},#{roomsName},#{roomsPrice},#{roomsContent},#{roomsMainStore},#{roomsMainStoreImg},#{roomsImages},#{roomsImagesImg},0)
+	</insert>
+	<select id="roomSelectList" parameterType="string" resultMap="roomResultMap">
+		select <include refid="roomBaseColumns" />
+		from rooms
+		where office_num = #{officeNum}
+	</select>
+	<select id="roomSelectOne" parameterType="hashmap" resultMap="roomResultMap">
+		select <include refid="roomBaseColumns" />
+		from rooms
+		where ROOMS_NUM = #{roomsNum} and OFFICE_NUM = #{officeNum}
+	</select>
+	<update id="roomUpdate" parameterType="room">
+		update rooms
+		set ROOMS_NAME = #{roomsName},
+			ROOMS_PRICE = #{roomsPrice},
+			ROOMS_CONTENT = #{roomsContent}
+		where ROOMS_NUM = #{roomsNum} and OFFICE_NUM = #{officeNum}
+	</update>
+	<delete id="roomDelete" parameterType="hashmap">
+		delete from rooms where rooms_num = #{roomsNum}
+	</delete>
+</mapper>

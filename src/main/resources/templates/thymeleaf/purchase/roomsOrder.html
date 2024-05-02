@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table width="700" align="center">
+    <caption>예약페이지</caption>
+    <tr><td> 주문서 <hr />1. 주문 상품<br /></td></tr>
+</table>
+<table width="700" align="center">
+    <tr>
+        <td>상품 대표 이미지</td>
+        <td>office이름 / room이름</td>
+        <td>입실일 / 퇴실일 / 일수</td>
+        <td>상품금액</td>
+    </tr>
+    <tr>
+        <td><img th:src="|/static/upload/${roomCommand.roomsMainStore}|" width ="30" /></td>
+        <td>[[${officeCommand.officeName}]] / [[${roomCommand.roomsName}]]</td>
+        <td>
+            [[${#dates.format(reservationCommand.reservationStartDate, 'yyyy-MM-dd')}]] /
+            [[${#dates.format(reservationCommand.reservationEndDate, 'yyyy-MM-dd')}]] /
+            [[${days}]]일
+        </td>
+        <td>[[${#numbers.formatCurrency(roomCommand.roomsPrice)}]]원 / 1박</td>
+    </tr>
+</table>
+<form action="roomsOrder" method="post">
+    <input type="hidden" name="purchaseName" th:value="${officeCommand.officeName+'의 '+roomCommand.roomsName}"/>
+    <input type="hidden" name="roomsNum" th:value="${roomCommand.roomsNum}"/>
+    <input type="hidden" name="officeNum" th:value="${officeCommand.officeNum}">
+    <input type="hidden" name="totalPaymentPrice" th:value="${sumPrice}" />
+    <input type="hidden" name="reservationStartDate" th:value="${#dates.format(reservationCommand.reservationStartDate, 'yyyy-MM-dd')}">
+    <input type="hidden" name="reservationEndDate" th:value="${#dates.format(reservationCommand.reservationEndDate, 'yyyy-MM-dd')}">
+    <input type="hidden" name="days" th:value="${days}">
+    <table width="700"  align="center">
+        <tr>
+            <td>
+                <table width="350">
+                    <tr><td colspan=2>2. 이용자 정보</td></tr>
+                    <tr>
+                        <td>성명</td>
+                        <td><input type="text" name="reservationName" th:value="${memberCommand.memberName}" /></td>
+                    </tr>
+                    <tr>
+                        <td>연락처</td>
+                        <td><input type="tel" name="reservationPhone" th:value="${memberCommand.memberPhone1}" /></td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <table width="350">
+
+                    <tr><td colspan=2 align="center">3. 결제정보</td></tr>
+                    <tr><td> 총 금액 </td><td align="right">[[${#numbers.formatCurrency(sumPrice)}]]원</td></tr>
+                    <tr><td> 총 결제 금액 </td>
+                        <td align="right">[[${#numbers.formatCurrency(sumPrice)}]]원 </td></tr>
+                    <tr><td align="center"  colspan=2><input type="submit" value="구매하기"/></td></tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
