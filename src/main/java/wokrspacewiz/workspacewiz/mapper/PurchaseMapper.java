@@ -7,6 +7,7 @@ import wokrspacewiz.workspacewiz.domain.PurchaseDTO;
 import wokrspacewiz.workspacewiz.domain.PurchaseListDTO;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface PurchaseMapper {
@@ -21,4 +22,6 @@ public interface PurchaseMapper {
     void purchaseStatusUpdate(PurchaseDTO dpto);
 
     List<OrderListDTO> orderList(String memberNum);
+
+    void purchaseDelete(Map<String, String> map);
 }

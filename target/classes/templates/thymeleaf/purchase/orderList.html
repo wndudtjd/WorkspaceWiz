@@ -35,10 +35,11 @@
         </td>
         <td>
             <th:block th:if="${dto.purchaseDTO.purchaseStatus == '입금대기중'}">
-                결제하기
+                <a th:href="|paymentOk?purchaseNum=${dto.purchaseDTO.purchaseNum}|">결제하기</a> /
+                <a th:href="|paymentDel?purchaseNum=${dto.purchaseDTO.purchaseNum}|">예약취소</a>
             </th:block>
             <th:block th:if="${dto.purchaseDTO.purchaseStatus == '결제완료'}">
-                예약취소
+                <a th:href="|paymentDel?purchaseNum=${dto.purchaseDTO.purchaseNum}|">예약취소</a>
             </th:block>
         </td>
     </tr>

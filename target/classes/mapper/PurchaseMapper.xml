@@ -142,4 +142,8 @@
             </if>
         </where>
     </select>
+    <delete id="purchaseDelete" parameterType="hashmap">
+        delete from purchase
+        where PURCHASE_NUM = #{purchaseNum} and MEMBER_NUM = #{memberNum}
+    </delete>
 </mapper>

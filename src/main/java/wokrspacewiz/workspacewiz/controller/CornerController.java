@@ -12,10 +12,7 @@ import wokrspacewiz.workspacewiz.command.PurchaseCommand;
 import wokrspacewiz.workspacewiz.command.ReservationCommand;
 import wokrspacewiz.workspacewiz.command.ScheduleCommand;
 import wokrspacewiz.workspacewiz.service.IniPayReqService;
-import wokrspacewiz.workspacewiz.service.purchase.IniPayReturnService;
-import wokrspacewiz.workspacewiz.service.purchase.OrderProcessListService;
-import wokrspacewiz.workspacewiz.service.purchase.RoomsBuyService;
-import wokrspacewiz.workspacewiz.service.purchase.RoomsOrderService;
+import wokrspacewiz.workspacewiz.service.purchase.*;
 import wokrspacewiz.workspacewiz.service.reservation.DateService;
 
 @Controller
@@ -29,6 +26,7 @@ public class CornerController {
     private final IniPayReqService iniPayReqService;
     private final IniPayReturnService iniPayReturnService;
     private final OrderProcessListService orderProcessListService;
+    private final PaymentDeleteService paymentDeleteService;
 
     @GetMapping("reservation")
     public String reservation(ScheduleCommand scheduleCommand,String roomsNum, String officeNum, Model model) {
@@ -61,5 +59,10 @@ public class CornerController {
     public String orderList(Model model, HttpSession session) {
         orderProcessListService.execute(model, session);
         return "thymeleaf/purchase/orderList";
+    }
+    @GetMapping("paymentDel")
+    public String paymentDel(String purchaseNum, Model model, HttpSession session) {
+        paymentDeleteService.execute(purchaseNum, session);
+        return "redirect:orderList";
     }
 }
