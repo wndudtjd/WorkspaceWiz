@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wokrspacewiz.workspacewiz.mapper.FindMapper">
+	<select id="findId" parameterType="hashmap" resultType="string">
+        select MEMBER_ID
+        from MEMBERS
+        where MEMBER_PHONE1 = #{userPhone} and MEMBER_EMAIL = #{userEmail}
+        union
+        select EMP_ID
+        from EMPLOYEES
+        where EMP_PHONE = #{userPhone} and EMP_EMAIL = #{userEmail}
+    </select>
+</mapper>
