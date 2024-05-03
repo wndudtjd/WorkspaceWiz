@@ -38,12 +38,12 @@ public class DateService {
         int dayNum = cal.get(Calendar.DAY_OF_WEEK) ; // 1일에 해당하는 요일
         int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH); // 해당달의 마지막 날
 
+        // HTML으로 reservationStartDate, reservationEndDate 사이의 값들을 List로 보내줌.
         Map<String, String> map = new HashMap<>();
         map.put("roomsNum", roomsNum);
         map.put("officeNum", officeNum);
         List<PurchaseListDTO> list = purchaseMapper.purchaseListSelectList(map);
         List<Date> allDates = new ArrayList<>();
-        int i = 0;
         for (PurchaseListDTO purchase : list) {
             List<Date> datesForPurchase = getDatesBetween(purchase.getReservationStartDate(), purchase.getReservationEndDate());
             allDates.addAll(datesForPurchase); // 모든 예약 날짜 추가
