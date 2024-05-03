@@ -3,13 +3,28 @@
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="wokrspacewiz.workspacewiz.mapper.FindMapper">
-	<select id="findId" parameterType="hashmap" resultType="string">
+    <select id="findId" parameterType="hashmap" resultType="string">
         select MEMBER_ID
         from MEMBERS
-        where MEMBER_PHONE1 = #{userPhone} and MEMBER_EMAIL = #{userEmail}
+        where MEMBER_PHONE1 = #{userPhone}
+          and MEMBER_EMAIL = #{userEmail}
         union
         select EMP_ID
         from EMPLOYEES
-        where EMP_PHONE = #{userPhone} and EMP_EMAIL = #{userEmail}
+        where EMP_PHONE = #{userPhone}
+          and EMP_EMAIL = #{userEmail}
     </select>
+    <update id="pwUpdate" parameterType="userChangePw">
+        <if test="grade = 'mem'">
+            update MEMBERS
+            set MEMBER_PW = #{userPw}
+            where MEMBER_ID = #{userId}
+        </if>
+        <if test="grade = 'emp'">
+            update EMPLOYEES
+            set EMP_PW = #{userPw}
+            where EMP_ID = #{userId}
+        </if>
+    </update>
+
 </mapper>
