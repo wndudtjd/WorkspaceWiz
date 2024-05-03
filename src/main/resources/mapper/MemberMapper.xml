@@ -81,4 +81,9 @@
         set MEMBER_EMAIL_CONF = 'Y'
         where MEMBER_EMAIL = #{memberEmail} and member_email_conf is null
     </update>
+    <update id="memberPwUpdate" parameterType="hashmap">
+        update members
+        set MEMBER_PW = #{memberPw}
+        where MEMBER_ID = #{memberId}
+    </update>
 </mapper>
