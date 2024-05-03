@@ -28,4 +28,6 @@ public interface PurchaseMapper {
     PurchaseListDTO purchaseListSelectOne(String purchaseNum);
 
     int reservationCheckSelect(PurchaseListDTO dto);
+
+    List<PurchaseListDTO> purchaseListSelectList(Map<String, String> map);
 }

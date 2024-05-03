@@ -33,8 +33,8 @@ public class CornerController {
     private final ReservationCheckService reservationCheckService;
 
     @GetMapping("reservation")
-    public String reservation(ScheduleCommand scheduleCommand,String roomsNum, String officeNum, Model model) {
-        dateService.execute(scheduleCommand,model);
+    public String reservation(ScheduleCommand scheduleCommand, String roomsNum, String officeNum, Model model) {
+        dateService.execute(scheduleCommand, model, roomsNum, officeNum);
         model.addAttribute("roomsNum", roomsNum);
         model.addAttribute("officeNum", officeNum);
         return "thymeleaf/corner/reservation";

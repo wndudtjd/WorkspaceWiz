@@ -5,9 +5,25 @@
     <title>Title</title>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
     <style>
-        .selected { background-color: gray; } /* 선택된 날짜의 배경색 설정 */
+        .disabled {
+            background-color: gray;
+            pointer-events: none; /* 클릭 이벤트 비활성화 */
+            color: #ccc; /* 텍스트 색상 변경 */
+        }
     </style>
-    <script>
+    <script th:inline="javascript">
+        let disabledDates = /*[[${allDates}]]*/ []; // Thymeleaf를 사용하여 서버 측에서 날짜 목록을 JavaScript 배열로 변환
+        let formatDates = [];
+        // disabledDates = disabledDates.map(function(date) {
+        //     console.log("date : "  + date.slice(0, 10));
+        //     return new Date(date).toISOString().slice(0, 10); // 날짜 형식을 'YYYY-MM-DD'로 변경
+        // });
+        disabledDates.forEach(function(date) {
+            let formattedDate = date.slice(0, 10);
+            formatDates.push(formattedDate);
+        });
+        console.log(formatDates)
+
         $(function() {
             var clickCount = 0; // 클릭 횟수 카운트
             var startDate, endDate;
@@ -15,38 +31,52 @@
             var currentYear = parseInt($('#currentYear').text());
             var currentMonth = parseInt($('#currentMonth').text());
 
-            $('.nDayClick').click(function() {
+            // 날짜 비활성화 로직 추가
+            $('.nDayClick').each(function() {
                 var day = $(this).text();
                 var formattedDate = currentYear + '-' +
                     (currentMonth < 10 ? '0' : '') + currentMonth + '-' +
                     (day < 10 ? '0' + day : day);
-                console.log("formattedDate : " + formattedDate)
 
-                if (clickCount == 0) {
-                    $('#startDate').val(formattedDate);
-                    startDateIndex = $(this).parent().index();
-                    startDate = $('#startDate').val();
-                    clickCount = 1;
-                } else if (clickCount == 1) {
-                    $('#endDate').val(formattedDate);
-                    endDateIndex = $(this).parent().index();
-                    endDate = $('#endDate').val();
+                if (formatDates.includes(formattedDate)) {
+                    $(this).addClass('disabled');
+                }
+            });
 
-                    console.log("startDate : " + startDate);
-                    console.log("endDate : " + endDate);
+            $('.nDayClick').click(function() {
+                if (!$(this).hasClass('disabled')) {
+                    var day = $(this).text();
+                    var formattedDate = currentYear + '-' +
+                        (currentMonth < 10 ? '0' : '') + currentMonth + '-' +
+                        (day < 10 ? '0' + day : day);
+                    console.log("formattedDate : " + formattedDate)
 
-                    if (startDate > endDate) {
-                        var temp = startDate;
-                        startDate = endDate;
-                        endDate = temp;
+                    if (clickCount == 0) {
+                        $('#startDate').val(formattedDate);
+                        startDateIndex = $(this).parent().index();
+                        startDate = $('#startDate').val();
+                        clickCount = 1;
+                    } else if (clickCount == 1) {
+                        $('#endDate').val(formattedDate);
+                        endDateIndex = $(this).parent().index();
+                        endDate = $('#endDate').val();
 
-                        var tempIndex = startDateIndex;
-                        startDateIndex = endDateIndex;
-                        endDateIndex = tempIndex;
-                        $('#startDate').val(startDate);
-                        $('#endDate').val(endDate);
+                        console.log("startDate : " + startDate);
+                        console.log("endDate : " + endDate);
+
+                        if (startDate > endDate) {
+                            var temp = startDate;
+                            startDate = endDate;
+                            endDate = temp;
+
+                            var tempIndex = startDateIndex;
+                            startDateIndex = endDateIndex;
+                            endDateIndex = tempIndex;
+                            $('#startDate').val(startDate);
+                            $('#endDate').val(endDate);
+                        }
+                        clickCount = 0;
                     }
-                    clickCount = 0;
                 }
             });
         });
